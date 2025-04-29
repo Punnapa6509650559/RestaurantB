@@ -1,0 +1,16 @@
+package com.example.restaurantB.service;
+
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Service
+public class AvailableTablesService {
+
+    public Map<String, Object> getAvailableTables() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("availableTables", 8); // สมมุติ โต๊ะว่าง 8 โต๊ะ
+        return response;
+    }
+}
