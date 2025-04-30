@@ -11,32 +11,26 @@ public class RestaurantBDemoClient {
 
     public static void main(String[] args) {
         RestTemplate restTemplate = new RestTemplate();
+        String baseUrl = "http://192.168.1.83:8080"; // URL ของ A
 
-        String baseUrl = "http://192.168.1.83:8080"; // URL ของ restaurantA
-
-        // เรียกดูเมนูจาก A
+   
         String menuUrl = baseUrl + "/menu";
         Map<String, Object>[] menuArray = restTemplate.getForObject(menuUrl, Map[].class);
-        System.out.println("เมนูจากร้าน A:");
+        System.out.println("ผลลัพธ์จาก A (/menu):");
         if (menuArray != null) {
             for (Map<String, Object> item : menuArray) {
-                System.out.println("- " + item.get("name") + " ราคา " + item.get("price") + " บาท");
+                System.out.println("- " + item.get("name") + ": " + item.get("price") + " บาท");
             }
         }
 
-        // ประเมินราคารวมจากชื่อเมนูที่เลือก
-        String calculateUrl = baseUrl + "/calculate-price";
 
-        List<String> selectedDishes = Arrays.asList(
-                "ข้าวผัด",
-                "หมูกรอบคั่วพริกเกลือ",
-                "กะเพราหมูสับไข่ดาว"
-        );
+        String calcUrl = baseUrl + "/calculate-price";
+        List<String> selectedDishes = Arrays.asList("ข้าวผัด", "ไก่ย่าง");
 
         Map<String, Object> request = new HashMap<>();
         request.put("dishes", selectedDishes);
 
-        Map<String, Object> response = restTemplate.postForObject(calculateUrl, request, Map.class);
-        System.out.println("\nรวมราคาทั้งหมด: " + response.get("totalPrice") + " บาท");
+        Map<String, Object> priceResult = restTemplate.postForObject(calcUrl, request, Map.class);
+        System.out.println("ผลลัพธ์จาก A (/calculate-price): " + priceResult);
     }
 }
