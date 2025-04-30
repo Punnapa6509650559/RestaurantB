@@ -2,7 +2,9 @@ package com.example.restaurantB.demo;
 
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RestaurantBDemoClient {
@@ -10,15 +12,31 @@ public class RestaurantBDemoClient {
     public static void main(String[] args) {
         RestTemplate restTemplate = new RestTemplate();
 
-        String menuUrl = "http://192.168.1.83:8080/menu";
-        String menu = restTemplate.getForObject(menuUrl, String.class);
-        System.out.println("Menu from A: " + menu);
+        String baseUrl = "http://192.168.1.83:8080"; // URL ของ restaurantA
 
-        
-        String waitTimeUrl = "http://192.168.1.83:8080/wait-time";
-        Map<String, Integer> request = new HashMap<>();
-        request.put("dishes", 4); 
-        Map<String, Object> waitTime = restTemplate.postForObject(waitTimeUrl, request, Map.class);
-        System.out.println("Estimated wait time from A: " + waitTime);
+        // เรียกดูเมนูจาก A
+        String menuUrl = baseUrl + "/menu";
+        Map<String, Object>[] menuArray = restTemplate.getForObject(menuUrl, Map[].class);
+        System.out.println("เมนูจากร้าน A:");
+        if (menuArray != null) {
+            for (Map<String, Object> item : menuArray) {
+                System.out.println("- " + item.get("name") + " ราคา " + item.get("price") + " บาท");
+            }
+        }
+
+        // ประเมินราคารวมจากชื่อเมนูที่เลือก
+        String calculateUrl = baseUrl + "/calculate-price";
+
+        List<String> selectedDishes = Arrays.asList(
+                "ข้าวผัด",
+                "หมูกรอบคั่วพริกเกลือ",
+                "กะเพราหมูสับไข่ดาว"
+        );
+
+        Map<String, Object> request = new HashMap<>();
+        request.put("dishes", selectedDishes);
+
+        Map<String, Object> response = restTemplate.postForObject(calculateUrl, request, Map.class);
+        System.out.println("\nรวมราคาทั้งหมด: " + response.get("totalPrice") + " บาท");
     }
 }
