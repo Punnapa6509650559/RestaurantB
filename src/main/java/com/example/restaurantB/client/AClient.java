@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -15,15 +17,16 @@ public class AClient {
     @Value("${service.a.base-url}")
     private String baseUrl;
 
-    public String getMenu() {
+    public List<Map<String, Object>> getMenu() {
         String url = baseUrl + "/menu";
-        return restTemplate.getForObject(url, String.class);
+        Map<String, Object>[] menuArray = restTemplate.getForObject(url, Map[].class);
+        return Arrays.asList(menuArray);
     }
 
-    public Map<String, Object> estimateWaitTime(int dishes) {
-        String url = baseUrl + "/wait-time";
-        Map<String, Integer> request = new HashMap<>();
-        request.put("dishes", dishes);
+    public Map<String, Object> calculatePrice(List<String> dishNames) {
+        String url = baseUrl + "/calculate-price";
+        Map<String, Object> request = new HashMap<>();
+        request.put("dishes", dishNames);
         return restTemplate.postForObject(url, request, Map.class);
     }
 }

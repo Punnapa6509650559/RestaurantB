@@ -1,14 +1,13 @@
 package com.example.restaurantB.controller;
 
 import com.example.restaurantB.client.AClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/call-a")
 public class CallAController {
 
     private final AClient aClient;
@@ -17,13 +16,14 @@ public class CallAController {
         this.aClient = aClient;
     }
 
-    @GetMapping("/call-a/menu")
-    public String callMenuFromA() {
+    @GetMapping("/menu")
+    public List<Map<String, Object>> callMenuFromA() {
         return aClient.getMenu();
     }
 
-    @PostMapping("/call-a/wait-time")
-    public Map<String, Object> callWaitTimeFromA(@RequestBody Map<String, Integer> request) {
-        return aClient.estimateWaitTime(request.getOrDefault("dishes", 1));
+    @PostMapping("/calculate-price")
+    public Map<String, Object> callCalculatePriceFromA(@RequestBody Map<String, List<String>> body) {
+        List<String> dishes = body.get("dishes");
+        return aClient.calculatePrice(dishes);
     }
 }
