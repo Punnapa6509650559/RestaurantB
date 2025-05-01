@@ -1,6 +1,5 @@
 package com.example.restaurantB.client;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,9 +12,7 @@ import java.util.Map;
 public class AClient {
 
     private final RestTemplate restTemplate = new RestTemplate();
-
-    @Value("${service.a.base-url}")
-    private String baseUrl;
+    private final String baseUrl = "http://localhost:8080";
 
     public List<Map<String, Object>> getMenu() {
         String url = baseUrl + "/menu";

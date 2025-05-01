@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Estimated Wait Time - Restaurant B</title>
+</head>
+<body>
+    <h1>Estimate Wait Time</h1>
+    <form id="wait-form">
+        <label>Number of dishes: <input type="number" id="dishes" value="1" min="1"></label>
+        <button type="submit">Estimate</button>
+    </form>
+
+    <p id="result"></p>
+
+    <script>
+        document.getElementById("wait-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const dishes = parseInt(document.getElementById("dishes").value);
+            fetch("/api/estimate-wait-time", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ dishes })
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("result").innerText = 
+                    "Estimated wait time: " + data.waitTime + " minutes";
+            });
+        });
+    </script>
+</body>
+</html>

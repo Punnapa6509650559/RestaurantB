@@ -10,7 +10,7 @@ public class AvailableTablesService {
 
     public Map<String, Object> getAvailableTables() {
         Map<String, Object> response = new HashMap<>();
-        response.put("availableTables", 8); // สมมุติ โต๊ะว่าง 8 โต๊ะ
+        response.put("availableTables", 5);
         return response;
     }
 }

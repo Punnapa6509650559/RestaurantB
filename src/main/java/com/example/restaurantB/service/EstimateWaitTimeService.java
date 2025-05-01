@@ -9,7 +9,7 @@ import java.util.Map;
 public class EstimateWaitTimeService {
 
     public Map<String, Object> estimateWaitTime(int dishes) {
-        int waitTime = dishes * 12; // สมมุติ logic: 12 นาทีต่อจาน
+        int waitTime = dishes * 12;
         Map<String, Object> response = new HashMap<>();
         response.put("waitTime", waitTime);
         return response;

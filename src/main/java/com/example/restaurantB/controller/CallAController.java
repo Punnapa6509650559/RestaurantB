@@ -23,7 +23,6 @@ public class CallAController {
 
     @PostMapping("/calculate-price")
     public Map<String, Object> callCalculatePriceFromA(@RequestBody Map<String, List<String>> body) {
-        List<String> dishes = body.get("dishes");
-        return aClient.calculatePrice(dishes);
+        return aClient.calculatePrice(body.get("dishes"));
     }
 }

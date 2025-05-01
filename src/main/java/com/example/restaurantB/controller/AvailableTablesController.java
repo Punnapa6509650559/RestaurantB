@@ -9,14 +9,14 @@ import java.util.Map;
 @RestController
 public class AvailableTablesController {
 
-    private final AvailableTablesService availableTablesService;
+    private final AvailableTablesService service;
 
-    public AvailableTablesController(AvailableTablesService availableTablesService) {
-        this.availableTablesService = availableTablesService;
+    public AvailableTablesController(AvailableTablesService service) {
+        this.service = service;
     }
 
     @GetMapping("/api/available-tables")
     public Map<String, Object> getAvailableTables() {
-        return availableTablesService.getAvailableTables();
+        return service.getAvailableTables();
     }
 }

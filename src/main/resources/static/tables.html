@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Available Tables - Restaurant B</title>
+</head>
+<body>
+    <h1>Available Tables</h1>
+    <p id="table-count">Loading...</p>
+
+    <script>
+        fetch("/api/available-tables")
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("table-count").innerText = 
+                    "There are currently " + data.availableTables + " tables available.";
+            });
+    </script>
+</body>
+</html>

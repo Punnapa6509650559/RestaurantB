@@ -11,19 +11,17 @@ public class RestaurantBDemoClient {
 
     public static void main(String[] args) {
         RestTemplate restTemplate = new RestTemplate();
-        String baseUrl = "http://192.168.1.83:8080"; // URL ของ A
+        String baseUrl = "http://localhost:8080";
 
-   
+        // Fetch menu from A
         String menuUrl = baseUrl + "/menu";
         Map<String, Object>[] menuArray = restTemplate.getForObject(menuUrl, Map[].class);
-        System.out.println("ผลลัพธ์จาก A (/menu):");
-        if (menuArray != null) {
-            for (Map<String, Object> item : menuArray) {
-                System.out.println("- " + item.get("name") + ": " + item.get("price") + " บาท");
-            }
+        System.out.println("Menu from Restaurant A:");
+        for (Map<String, Object> item : menuArray) {
+            System.out.println("- " + item.get("name") + ": " + item.get("price") + " THB");
         }
 
-
+        // Calculate price from A
         String calcUrl = baseUrl + "/calculate-price";
         List<String> selectedDishes = Arrays.asList("ข้าวผัด", "ไก่ย่าง");
 
@@ -31,6 +29,6 @@ public class RestaurantBDemoClient {
         request.put("dishes", selectedDishes);
 
         Map<String, Object> priceResult = restTemplate.postForObject(calcUrl, request, Map.class);
-        System.out.println("ผลลัพธ์จาก A (/calculate-price): " + priceResult);
+        System.out.println("Total price: " + priceResult.get("totalPrice") + " THB");
     }
 }

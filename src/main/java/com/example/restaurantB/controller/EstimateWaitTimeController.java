@@ -1,23 +1,22 @@
 package com.example.restaurantB.controller;
 
 import com.example.restaurantB.service.EstimateWaitTimeService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
 public class EstimateWaitTimeController {
 
-    private final EstimateWaitTimeService estimateWaitTimeService;
+    private final EstimateWaitTimeService service;
 
-    public EstimateWaitTimeController(EstimateWaitTimeService estimateWaitTimeService) {
-        this.estimateWaitTimeService = estimateWaitTimeService;
+    public EstimateWaitTimeController(EstimateWaitTimeService service) {
+        this.service = service;
     }
 
     @PostMapping("/api/estimate-wait-time")
-    public Map<String, Object> estimateWaitTime(@RequestBody Map<String, Integer> request) {
-        return estimateWaitTimeService.estimateWaitTime(request.getOrDefault("dishes", 1));
+    public Map<String, Object> estimate(@RequestBody Map<String, Integer> body) {
+        int dishes = body.getOrDefault("dishes", 1);
+        return service.estimateWaitTime(dishes);
     }
 }
