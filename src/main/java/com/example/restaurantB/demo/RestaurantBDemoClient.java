@@ -12,7 +12,7 @@ public class RestaurantBDemoClient {
         System.out.println("=== Restaurant B calling services from A ===\n");
 
        
-        System.out.println("[Service 1] GET /menu");
+        System.out.println("[Service 1] Get Menu");
         String menuUrl = "http://localhost:8080/menu";
         List<Map<String, Object>> menu = restTemplate.getForObject(menuUrl, List.class);
 
@@ -21,7 +21,7 @@ public class RestaurantBDemoClient {
             System.out.println("- " + item.get("name") + ": " + item.get("price") + " THB");
         }
 
-        System.out.println("\n[Service 2] POST /calculate-price");
+        System.out.println("\n[Service 2] Calculate Price");
         String calcUrl = "http://localhost:8080/calculate-price";
 
         Map<String, Object> dish1 = new HashMap<>();
