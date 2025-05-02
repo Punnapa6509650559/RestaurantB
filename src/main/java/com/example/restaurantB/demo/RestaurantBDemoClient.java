@@ -1,36 +1,46 @@
 package com.example.restaurantB.demo;
 
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RestaurantBDemoClient {
-
     public static void main(String[] args) {
         RestTemplate restTemplate = new RestTemplate();
-        String baseUrl = "http://localhost:8080";
 
-        System.out.println("[B → A] Fetching menu from Restaurant A...");
+        System.out.println("=== Restaurant B calling services from A ===\n");
 
-        String menuUrl = baseUrl + "/menu";
-        Map<String, Object>[] menuArray = restTemplate.getForObject(menuUrl, Map[].class);
-        System.out.println("Menu received from A:");
-        for (Map<String, Object> item : menuArray) {
+       
+        System.out.println("[Service 1] GET /menu");
+        String menuUrl = "http://localhost:8080/menu";
+        List<Map<String, Object>> menu = restTemplate.getForObject(menuUrl, List.class);
+
+        System.out.println("Menu received from Restaurant A:");
+        for (Map<String, Object> item : menu) {
             System.out.println("- " + item.get("name") + ": " + item.get("price") + " THB");
         }
 
-        System.out.println("\n[B → A] Requesting total price for selected dishes...");
+        System.out.println("\n[Service 2] POST /calculate-price");
+        String calcUrl = "http://localhost:8080/calculate-price";
 
-        String calcUrl = baseUrl + "/calculate-price";
-        List<String> selectedDishes = Arrays.asList("ข้าวผัด", "ไก่ย่าง");
+        Map<String, Object> dish1 = new HashMap<>();
+        dish1.put("name", "ข้าวผัด");
+        dish1.put("quantity", 1);
 
-        Map<String, Object> request = new HashMap<>();
-        request.put("dishes", selectedDishes);
+        Map<String, Object> dish2 = new HashMap<>();
+        dish2.put("name", "ไก่ย่าง");
+        dish2.put("quantity", 2);
 
-        Map<String, Object> priceResult = restTemplate.postForObject(calcUrl, request, Map.class);
-        System.out.println("Total price calculated by A: " + priceResult.get("totalPrice") + " THB");
+        Map<String, Object> reqBody = new HashMap<>();
+        reqBody.put("order", List.of(dish1, dish2));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(reqBody, headers);
+
+        Map<String, Object> result = restTemplate.postForObject(calcUrl, entity, Map.class);
+        System.out.println("Total price for selected items: " + result.get("totalPrice") + " THB");
     }
 }

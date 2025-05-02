@@ -1,8 +1,11 @@
 package com.example.restaurantB.controller;
 
+import com.example.restaurantB.model.OrderItem;
 import com.example.restaurantB.service.EstimateWaitTimeService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -15,8 +18,13 @@ public class EstimateWaitTimeController {
     }
 
     @PostMapping("/api/estimate-wait-time")
-    public Map<String, Object> estimate(@RequestBody Map<String, Integer> body) {
-        int dishes = body.getOrDefault("dishes", 1);
-        return service.estimateWaitTime(dishes);
+    public Map<String, Object> estimate(@RequestBody Map<String, List<OrderItem>> body) {
+        List<OrderItem> order = body.get("order");
+        int waitTime = service.estimateWaitTime(order);
+    
+        Map<String, Object> response = new HashMap<>();
+        response.put("waitTime", waitTime);
+        return response;
     }
-}
+}    
+

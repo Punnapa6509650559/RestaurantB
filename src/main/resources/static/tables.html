@@ -2,19 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Available Tables - Restaurant B</title>
+    <title>Restaurant B - Available Tables</title>
+    <link href="https://fonts.googleapis.com/css2?family=TH+Sarabun+New&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'TH Sarabun New', sans-serif;
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            color: #333;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 6px 12px;
+            font-size: 20px;
+            font-family: 'TH Sarabun New', sans-serif;
+        }
+        p {
+            font-size: 22px;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Available Tables</h1>
-    <p id="table-count">Loading...</p>
+    <h1>Restaurant B - Available Tables</h1>
+    <button onclick="loadTables()">Check Available Tables</button>
+    <p id="result">No data yet</p>
 
     <script>
-        fetch("/api/available-tables")
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById("table-count").innerText = 
-                    "There are currently " + data.availableTables + " tables available.";
-            });
+        function loadTables() {
+            fetch("/api/available-tables")
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById("result").innerText =
+                        "Currently available tables: " + data.availableTables;
+                });
+        }
     </script>
 </body>
 </html>
