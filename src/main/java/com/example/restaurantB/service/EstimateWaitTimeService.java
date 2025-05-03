@@ -6,8 +6,6 @@ import com.example.restaurantB.repository.WaitTimeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-
 
 @Service
 public class EstimateWaitTimeService {
@@ -22,14 +20,25 @@ public class EstimateWaitTimeService {
         int total = 0;
 
         for (OrderItem item : order) {
-            WaitTime wt = waitTimeRepository.findByName(item.getName()).orElse(null);
-            int base = (wt != null) ? wt.getMinutes() : 10;
-            int qty = item.getQuantity();
+            String itemName = item.getName().trim(); // เผื่อกรณีมีช่องว่าง
+            int quantity = item.getQuantity();
 
-            if (qty == 1) {
+            // Debug log
+            System.out.println("Looking up: \"" + itemName + "\" (quantity: " + quantity + ")");
+
+            WaitTime wt = waitTimeRepository.findByName(itemName).orElse(null);
+            if (wt != null) {
+                System.out.println("Found in DB → base wait time: " + wt.getMinutes() + " mins");
+            } else {
+                System.out.println("NOT FOUND in DB → using fallback: 10 mins");
+            }
+
+            int base = (wt != null) ? wt.getMinutes() : 10;
+
+            if (quantity == 1) {
                 total += base;
             } else {
-                total += base + (int) ((qty - 1) * base * 0.5);
+                total += base + (int) ((quantity - 1) * base * 0.5);
             }
         }
 
