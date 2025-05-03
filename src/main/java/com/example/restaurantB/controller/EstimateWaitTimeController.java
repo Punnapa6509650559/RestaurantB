@@ -16,15 +16,14 @@ public class EstimateWaitTimeController {
     public EstimateWaitTimeController(EstimateWaitTimeService service) {
         this.service = service;
     }
-
     @PostMapping("/api/estimate-wait-time")
-    public Map<String, Object> estimate(@RequestBody Map<String, List<OrderItem>> body) {
-        List<OrderItem> order = body.get("order");
+    public Map<String, Object> estimate(@RequestBody List<OrderItem> order) {
         int waitTime = service.estimateWaitTime(order);
     
         Map<String, Object> response = new HashMap<>();
         response.put("waitTime", waitTime);
         return response;
     }
-}    
-
+    
+    
+}

@@ -53,8 +53,8 @@
     <table id="order-table">
       <thead>
         <tr>
-          <th>Dish</th>
-          <th>Quantity</th>
+          <th>เมนูอาหาร</th>
+          <th>จำนวน</th>
           <th></th>
         </tr>
       </thead>
@@ -62,19 +62,19 @@
         <tr>
           <td>
             <select name="dish">
-              <option value="กะเพราหมูสับไข่ดาว">กะเพราหมูสับไข่ดาว (45 THB)</option>
-              <option value="หมูกรอบคั่วพริกเกลือ">หมูกรอบคั่วพริกเกลือ (50 THB)</option>
-              <option value="ไก่ย่าง">ไก่ย่าง (40 THB)</option>
-              <option value="ข้าวผัด">ข้าวผัด (45 THB)</option>
+              <option value="กะเพราหมูสับไข่ดาว">กะเพราหมูสับไข่ดาว</option>
+              <option value="หมูกรอบคั่วพริกเกลือ">หมูกรอบคั่วพริกเกลือ</option>
+              <option value="ไก่ย่าง">ไก่ย่าง</option>
+              <option value="ข้าวผัด">ข้าวผัด</option>
             </select>
           </td>
           <td><input type="number" min="1" value="1" name="quantity"></td>
-          <td><button type="button" onclick="removeRow(this)">Remove</button></td>
+          <td><button type="button" onclick="removeRow(this)">ลบ</button></td>
         </tr>
       </tbody>
     </table>
-    <button type="button" onclick="addRow()">+ Add Dish</button><br>
-    <button type="submit">Estimate Wait Time</button>
+    <button type="button" onclick="addRow()">+ เพิ่มเมนู</button><br>
+    <button type="submit">คำนวณเวลารออาหาร</button>
   </form>
 
   <p id="result"></p>
@@ -86,14 +86,14 @@
       row.innerHTML = `
         <td>
           <select name="dish">
-            <option value="กะเพราหมูสับไข่ดาว">กะเพราหมูสับไข่ดาว (45 THB)</option>
-            <option value="หมูกรอบคั่วพริกเกลือ">หมูกรอบคั่วพริกเกลือ (50 THB)</option>
-            <option value="ไก่ย่าง">ไก่ย่าง (40 THB)</option>
-            <option value="ข้าวผัด">ข้าวผัด (45 THB)</option>
+            <option value="กะเพราหมูสับไข่ดาว">กะเพราหมูสับไข่ดาว</option>
+            <option value="หมูกรอบคั่วพริกเกลือ">หมูกรอบคั่วพริกเกลือ</option>
+            <option value="ไก่ย่าง">ไก่ย่าง</option>
+            <option value="ข้าวผัด">ข้าวผัด</option>
           </select>
         </td>
         <td><input type="number" min="1" value="1" name="quantity"></td>
-        <td><button type="button" onclick="removeRow(this)">Remove</button></td>
+        <td><button type="button" onclick="removeRow(this)">ลบ</button></td>
       `;
       tbody.appendChild(row);
     }
@@ -120,12 +120,12 @@
       fetch("/api/estimate-wait-time", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ order })
+        body: JSON.stringify(order)
       })
       .then(res => res.json())
       .then(data => {
         document.getElementById("result").innerText =
-          "Estimated wait time: " + data.waitTime + " minutes.";
+          "เวลารออาหารโดยประมาณ: " + data.waitTime + " นาที";
       });
     });
   </script>

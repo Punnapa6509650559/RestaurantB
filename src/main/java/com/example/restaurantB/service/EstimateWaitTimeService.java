@@ -1,39 +1,38 @@
 package com.example.restaurantB.service;
 
 import com.example.restaurantB.model.OrderItem;
+import com.example.restaurantB.model.WaitTime;
+import com.example.restaurantB.repository.WaitTimeRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
+
 
 @Service
 public class EstimateWaitTimeService {
 
-    private final Map<String, Integer> waitTimeMap = new HashMap<>();
+    private final WaitTimeRepository waitTimeRepository;
 
-    public EstimateWaitTimeService() {
-        waitTimeMap.put("กะเพราหมูสับไข่ดาว", 12);
-        waitTimeMap.put("หมูกรอบคั่วพริกเกลือ", 15);
-        waitTimeMap.put("ไก่ย่าง", 10);
-        waitTimeMap.put("ข้าวผัด", 10);
+    public EstimateWaitTimeService(WaitTimeRepository waitTimeRepository) {
+        this.waitTimeRepository = waitTimeRepository;
     }
 
     public int estimateWaitTime(List<OrderItem> order) {
-        int totalWait = 0;
+        int total = 0;
 
         for (OrderItem item : order) {
-            int baseTime = waitTimeMap.getOrDefault(item.getName(), 10);
+            WaitTime wt = waitTimeRepository.findByName(item.getName()).orElse(null);
+            int base = (wt != null) ? wt.getMinutes() : 10;
             int qty = item.getQuantity();
 
             if (qty == 1) {
-                totalWait += baseTime;
+                total += base;
             } else {
-    
-                totalWait += baseTime + (int) ((qty - 1) * baseTime * 0.5);
+                total += base + (int) ((qty - 1) * base * 0.5);
             }
         }
 
-        return totalWait;
+        return total;
     }
 }

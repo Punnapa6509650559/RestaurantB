@@ -1,47 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Restaurant B - Available Tables</title>
-    <link href="https://fonts.googleapis.com/css2?family=TH+Sarabun+New&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'TH Sarabun New', sans-serif;
-            max-width: 700px;
-            margin: 30px auto;
-            padding: 20px;
-            background: #fff;
-            color: #333;
-        }
-        h1 {
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-        button {
-            padding: 6px 12px;
-            font-size: 20px;
-            font-family: 'TH Sarabun New', sans-serif;
-        }
-        p {
-            font-size: 22px;
-            margin-top: 15px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Restaurant B - Available Tables</title>
+  <link href="https://fonts.googleapis.com/css2?family=TH+Sarabun+New&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'TH Sarabun New', sans-serif;
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #fff;
+      color: #333;
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 20px;
+      cursor: pointer;
+      font-family: 'TH Sarabun New', sans-serif;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 22px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Restaurant B - Available Tables</h1>
-    <button onclick="loadTables()">Check Available Tables</button>
-    <p id="result">No data yet</p>
+  <h1>Restaurant B - Available Tables</h1>
+  <button onclick="checkTables()">Check Available Tables</button>
+  <p id="result">Currently available tables: -</p>
 
-    <script>
-        function loadTables() {
-            fetch("/api/available-tables")
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById("result").innerText =
-                        "Currently available tables: " + data.availableTables;
-                });
-        }
-    </script>
+  <script>
+    function checkTables() {
+      fetch('/api/available-tables')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById("result").innerText =
+            "Currently available tables: " + data;
+        });
+    }
+  </script>
 </body>
 </html>
