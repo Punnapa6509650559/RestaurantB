@@ -53,8 +53,8 @@
     <table id="order-table">
       <thead>
         <tr>
-          <th>เมนูอาหาร</th>
-          <th>จำนวน</th>
+          <th>Dish</th>
+          <th>Quantity</th>
           <th></th>
         </tr>
       </thead>
@@ -69,12 +69,12 @@
             </select>
           </td>
           <td><input type="number" min="1" value="1" name="quantity"></td>
-          <td><button type="button" onclick="removeRow(this)">ลบ</button></td>
+          <td><button type="button" onclick="removeRow(this)">Remove</button></td>
         </tr>
       </tbody>
     </table>
-    <button type="button" onclick="addRow()">+ เพิ่มเมนู</button><br>
-    <button type="submit">คำนวณเวลารออาหาร</button>
+    <button type="button" onclick="addRow()">+ Add Dish</button><br>
+    <button type="submit">Estimate Wait Time</button>
   </form>
 
   <p id="result"></p>
@@ -93,7 +93,7 @@
           </select>
         </td>
         <td><input type="number" min="1" value="1" name="quantity"></td>
-        <td><button type="button" onclick="removeRow(this)">ลบ</button></td>
+        <td><button type="button" onclick="removeRow(this)">Remove</button></td>
       `;
       tbody.appendChild(row);
     }
@@ -125,7 +125,7 @@
       .then(res => res.json())
       .then(data => {
         document.getElementById("result").innerText =
-          "เวลารออาหารโดยประมาณ: " + data.waitTime + " นาที";
+          "Estimated wait time: " + data.waitTime + " minutes";
       });
     });
   </script>
